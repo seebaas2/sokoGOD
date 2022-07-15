@@ -1,0 +1,47 @@
+@startuml
+'https://plantuml.com/class-diagram
+package sokoban {
+    package juego {
+        enum ConstantesNiveles {
+            + {static} NIVEL_1
+            + {static} NIVEL_2
+            + {static} NIVEL_3
+            + {static} NIVEL_4
+            + {static} NIVEL_5
+        }
+
+        class Sokoban{
+            - numeroDeNivelSeleccionado: int
+            - númeroDeNiveles: int
+            - {static} ultimaPartida: File
+            - {static} niveles: Nivel[]
+
+            + iniciarNiveles(): Nivel[]
+            + iniciarNivel(evento: KeyEvent): void
+            + reiniciarNivel(): void
+            + enviarNivelParaElPintado(): Nivel
+            + contarNivelesEncontrados(): int
+            + cargarÚltimaPartidaJugada(): void
+            + guardarPartida(): void
+            + setNúmeroDeNivelSeleccionado(numeroDeNivel: int): void
+        }
+
+
+        class StreamCorruptedException <extends ObjectStreamException>
+        class IOException <extends Exception>
+        class ClassNotFoundException <extends ReflectiveOperationException>
+
+        package funcionalidadDelJuego {
+            package mapear {}
+
+            package movimientoPersonaje {}
+        }
+    }
+}
+
+Sokoban -left-> funcionalidadDelJuego
+Sokoban ..>"<<throws>>" StreamCorruptedException
+Sokoban ..>"<<throws>>" ClassNotFoundException
+Sokoban ..>"<<throws>>" IOException
+Sokoban -left-> ConstantesNiveles
+@enduml

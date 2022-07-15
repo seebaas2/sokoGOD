@@ -1,0 +1,127 @@
+@startuml
+'https://plantuml.com/class-diagram
+package sokoban {
+    package soundtrack {
+            class UnsupportedAudioFileException <extends Exception>
+
+            class IOException <extends Exception>
+
+            class LineUnavailableException <extends Exception>
+
+            class SoundTrack {
+                - nombreCanción: String
+                - canción: Clip
+                - file: File
+                - audioStream: AudioStreamInputStream
+
+                + reproducir(canción: Clip): void
+                + reiniciarCanción(canción: Clip): void
+                + pararCanción(canción: Clip): void
+                + getCanción(): Clip
+            }
+        }
+    package interfazGráfica <<Folder>> {
+        class Créditos <extends JFrame>{
+            - btnVolverC: JButton
+            - pnlCréditos: JPanel
+            - btnJhordy: JButton
+            - btnKarina: JButton
+            - btnKevin: JButton
+            - btnSebas: JButton
+            - btnJorge: JButton
+            - pnlIntegrantes: JPanel
+
+            + crearFrame()
+        }
+
+        class MenúNiveles <extends JFrame> {
+            - btnNivel1: JButton
+            - btnNivel2: JButton
+            - btnNivel3: JButton
+            - btnNivel4: JButton
+            - btnVolver: JButton
+            - btnCargar: JButton
+            - pnlMenuNiveles: JPanel
+            - ventanaSokoban: VentanaSokoban
+
+            + crearFrame(): void
+        }
+
+        class Instrucciones <extends JFrame> {
+            - pnlInstrucciones: JPanel
+            - btnVolver: JButton
+
+            + crearFrame()
+        }
+
+        class MenúPrincipal <extends JFrame> {
+            - pnlMenúPrincipal: JPanel
+            - btnJugar: JButton
+            - btnCréditos: JButton
+            - btnSalir: JButton
+            - btnInstrucciones: JButton
+            - pnlTítulo: JPanel
+            - pnlBotones: JPanel
+            - pnlLogo: JPanel
+            - pnlBajo: JPanel
+            - {static} sokoban: Sokoban
+
+            + crearFrame(): void
+        }
+
+        class VentanaSokoban <extends JFrame> {
+            - canción: SoundTrack
+            - canciónActual: String
+            - cuadroGráficoDeJuego: CuadroGráficoDeJuego
+            - btnVolver:JButton
+            - btnReiniciar: JButton
+            - btnGuardar: JButton
+            - pnlContent: JPanel
+            - pnlSokoban: JPanel
+
+            + iniciar(nombreCanción: String): void
+            + escogerCuadroGraficoDeJuego(): CuadroGráficoDeJuego
+        }
+    }
+
+    package background {
+        class Fondo <extends JPanel> {
+            - rutaDeLaImagen: String
+
+            + paintComponent(g: Graphics): void
+        }
+    }
+
+    package interfazGráficaDelJuego {
+        class CuadroGráficoDeJuego <extends JPanel>  {
+            - nivel: Nivel
+            - direcciónDelFondo: URL
+            - encuadreEnY: int
+            - encuadreEnX: int
+            - pnlCuadroGraficoDeJuego: JPanel
+
+            + paint(g: Graphics): void
+            + pintarNivel(g: Graphics2D): void
+            + pintarFondo(g: Graphics2D): void
+            + pintarMapa(g: Graphics2D): void
+            + pintarBob(g: Graphics2D): void
+            + pintarBloque(g: Graphics2D, fila: int, columna: int): void
+            + pintarPuntaje(g: Graphics2D): void
+            + pintarPalabras(g: Graphics2D): void
+            + crearFuente(nombreDeLaFuente: String, tamaño: int)
+        }
+    }
+}
+
+MenúPrincipal --> MenúNiveles
+MenúPrincipal --> Instrucciones
+MenúPrincipal --> Créditos
+MenúNiveles --> VentanaSokoban
+VentanaSokoban --> interfazGráficaDelJuego
+interfazGráfica --> background
+VentanaSokoban --> SoundTrack
+SoundTrack ..>"<<throws>>" UnsupportedAudioFileException
+SoundTrack .right.>"<<throws>>" IOException
+SoundTrack ..>"<<throws>>" LineUnavailableException
+
+@enduml

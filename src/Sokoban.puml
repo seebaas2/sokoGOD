@@ -1,0 +1,50 @@
+@startuml
+'https://plantuml.com/class-diagram
+package sokoban {
+    package juego {
+        class Sokoban
+
+        package funcionalidadDelJuego {
+            class Nivel
+
+            package mapeo {
+                class Mapa
+
+                package bloques {
+
+                }
+            }
+
+            package movimientoPersonaje {
+
+            }
+        }
+    }
+
+    package soundtrack {
+
+    }
+
+    package background {
+
+    }
+
+    package interfazGráfica {
+        class VentanaSokoban
+    }
+
+    package interfazGráficaDelJuego {
+
+    }
+}
+
+interfazGráfica --> background
+VentanaSokoban --> soundtrack
+juego --> interfazGráfica
+VentanaSokoban --> interfazGráficaDelJuego
+Sokoban -left-> funcionalidadDelJuego
+Nivel --> movimientoPersonaje
+Nivel --> mapeo
+movimientoPersonaje .left.> mapeo
+Mapa --> bloques
+@enduml

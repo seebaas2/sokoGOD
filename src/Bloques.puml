@@ -1,0 +1,33 @@
+@startuml
+'https://plantuml.com/class-diagram
+package sokoban{
+    package bloques {
+        abstract class Bloque <implements Serializable>{
+            # direcciónDeSkin: URL
+            + esTraspasable: Boolean
+
+            + getDirecciónDeSkin(): URL
+        }
+
+        class Caja{
+            + laCajaEstáPresionandoUnBotón: boolean
+
+            + setLaCajaEstáPresionandoUnBotón(laCajaEstáPresionandoUnBotón: boolean): void
+        }
+
+        class Pared
+
+        class Suelo
+
+        class Vacío
+
+        class Botón
+    }
+}
+
+Suelo --|> Bloque
+Vacío -left-|> Bloque
+Botón -right-|> Bloque
+Pared --|> Bloque
+Caja -up-|> Bloque
+@enduml

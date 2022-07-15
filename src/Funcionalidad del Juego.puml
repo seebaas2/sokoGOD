@@ -1,0 +1,150 @@
+@startuml
+'https://plantuml.com/class-diagram
+package sokoban {
+    package juego {
+        package funcionalidadDelJuego <<Folder>> {
+            class PuntuaciónMenorACeroException  <extends Exception>
+
+            class Nivel <implements Serializable>{
+                - bob: Bob
+                - numeroDeNivel: int
+                - mapa: Mapa
+                - elNivelEstáCompleto: boolean
+                - rutaDelNivel: File
+                - puntuación: int
+
+                + obtenerRutaDelNivel(): File
+                + isElNivelEstáCompleto(): boolean
+                + teclaPresionada(evento: KeyEvent): void
+                + reiniciar()
+                + obtenerPuntuación(): int
+                - verificarPuntuación(): void
+                + getBob(): Bob
+                + getMapa(): Mapa
+            }
+
+            class ConstantesDePuntuación {
+                + PUNTUACIÓN_MAX {static}
+                + PUNTUACIÓN_MIN {static}
+                + COEFICIENTE_DE_RESTA {static}
+                - puntos: int
+
+                + gePuntos(): int
+            }
+
+            package mapeo <<Folder>> {
+                package bloques { }
+                class Mapa <implements Serializable>{
+                    - rutaDelNivel: File
+                    - diseñoInicial: int[][]
+                    - diseñoEnBloques: Bloque[][]
+                    - númeroDePasosParaPuntuaciónPerfecta: int
+
+                    + verificarBloque(f: int, c: int): void
+                    + transformarMapaNuméricoABloques(): void
+                    + tomarMapaNuméricoDelTexto(): void
+                    - númeroDePasosParaPuntuaciónPerfecta(): int
+                    + contarBotones(): int
+                    + getDiseñoEnBloques(): Bloque[][]
+                }
+
+                class BloqueInexistenteException <extends Exception>
+
+                enum CódigoDeBloque {
+                    + {static} SUELO: CódigoDeBloque
+                    + {static} PARED: CódigoDeBloque
+                    + {static} CAJA: CódigoDeBloque
+                    + {static} BOTÓN: CódigoDeBloque
+                    + {static} VACÍO: CódigoDeBloque
+                }
+            }
+
+            package movimientoPersonaje <<Folder>> {
+                class IOException <extends Exception>
+
+                class Bob <implements Serializable>{
+                    - posiciónEnX: int
+                    - posiciónEnY: int
+                    - direcciónDeSkin: URL
+                    - rutaDelNivel: File
+                    - numeroDePasos: int
+                    - numeroDeEmpujones: int
+                    - mapa: Mapa
+
+                    + elBloqueEsUnaCaja(constanteRespectoABob: ConstanteRespectoABob): boolean
+                    + elBloqueEsUnBotón(constanteRespectoABob: ConstanteRespectoABob): boolean
+                    + elBloqueEsUnSuelo(constanteRespectoABob: ConstanteRespectoABob): boolean
+                    + elBloqueEsTraspasable(constanteRespectoABob: ConstanteRespectoABob): boolean
+                    + devolverElBloqueRespectoABob(constanteRespectoABob: ConstanteRespectoABob): Bloque
+                    + puedeEmpujarCajaParticular(constanteRespectoABob1: ConstanteRespectoABob, constanteRespectoABob2: ConstanteRespectoABob): boolean
+                    + puedeEmpujarCajaGeneral(evento: KeyEvent): boolean
+                    + estáPresionandoUnBotónLaCajaQueDeseaMover(constanteRespectoABob: ConstanteRespectoABob): boolean
+                    + mutarBloque(constanteRespectoABob: ConstanteRespectoABob, bloque: Bloque): void
+                    + cambiarEstadoDeLaCaja(constanteRespectoABob: ConstanteRespectoABob, presionaBotón: boolean): void
+                    + esUnEmpujarDeTipoUno(constanteRespectoABob1: ConstanteRespectoABob, constanteRespectoABob2: ConstanteRespectoABob): boolean
+                    + empujarEnCasoDeTipoUno(constanteRespectoABob1: ConstanteRespectoABob, constanteRespectoABob2: ConstanteRespectoABob): void
+                    + esUnEmpujarDeTipoDos(constanteRespectoABob1: ConstanteRespectoABob, constanteRespectoABob2: ConstanteRespectoABob): boolean
+                    + empujarEnCasoDeTipoDos(constanteRespectoABob1: ConstanteRespectoABob, constanteRespectoABob2: ConstanteRespectoABob): void
+                    + esUnEmpujarDeTipoTres(constanteRespectoABob1: ConstanteRespectoABob, constanteRespectoABob2: ConstanteRespectoABob): boolean
+                    + empujarEnCasoDeTipoTres(constanteRespectoABob1: ConstanteRespectoABob, constanteRespectoABob2: ConstanteRespectoABob): void
+                    + empujarDeterminado(constanteRespectoABob1: ConstanteRespectoABob, constanteRespectoABob2: ConstanteRespectoABob): void
+                    + empujarCajaParticular(constanteRespectoABob1: ConstanteRespectoABob, constanteRespectoABob2: ConstanteRespectoABob): void
+                    + empujarCajaGeneral(evento: KeyEvent): void
+                    + puedeAvanzar(evento: KeyEvent): boolean
+                    + caminarParticular(constanteRespectoABob: ConstanteRespectoABob): void
+                    + actualizarDirecciónDeSkin(direcciónDeSkinSegúnElMovimiento: DirecciónDeSkinSegúnElMovimiento): void
+                    + caminarGeneral(evento: KeyEvent): void
+                    + interactuarConElMapa(evento: KeyEvent): void
+                    + tomarPosiciónEnXDelArchivo(): int
+                    + tomarPosiciónEnYDelArchivo(): int
+                    + reiniciarBob(): void
+                    + posiciónEnX(): int
+                    + posiciónEnY(): int
+                    + getDirecciónSkin(): URL
+                    + getNúmeroDePasos(): int
+                    + getNúmeroDeEmpujones(): int
+                }
+
+                enum ConstanteRespectoABob {
+                    + {static}  UN_BLOQUE_ARRIBA: ConstanteRespectoABob
+                    + {static}  UN_BLOQUE_ABAJO: ConstanteRespectoABob
+                    + {static}  UN_BLOQUE_IZQUIERDA: ConstanteRespectoABob
+                    + {static}  UN_BLOQUE_DERECHA: ConstanteRespectoABob
+                    + {static}  DOS_BLOQUES_ARRIBA: ConstanteRespectoABob
+                    + {static}  DOS_BLOQUES_ABAJO: ConstanteRespectoABob
+                    + {static}  DOS_BLOQUES_IZQUIERDA: ConstanteRespectoABob
+                    + {static}  DOS_BLOQUES_DERECHA: ConstanteRespectoABob
+                    - direcciónX: int
+                    - direcciónY: int
+
+                    + getDirecciónEnX(): int
+                    + getDirecciónEnY(): int
+                }
+
+                enum DirecciónDeSkinSegúnElMovimiento {
+                    + {static} CAMINANDO_ARRIBA: DirecciónDeSkinSegúnElMovimiento
+                    + {static} CAMINANDO_ABAJO: DirecciónDeSkinSegúnElMovimiento
+                    + {static} CAMINANDO_IZQUIERDA: DirecciónDeSkinSegúnElMovimiento
+                    + {static} CAMINANDO_DERECHA: DirecciónDeSkinSegúnElMovimiento
+                    - dirección: String
+
+                    + getDirección(): String
+                }
+            }
+        }
+    }
+}
+
+Bob ..> mapeo
+Nivel -down-> Bob
+Nivel -left-> mapeo
+Mapa -left-> CódigoDeBloque
+Bob --> ConstanteRespectoABob
+Bob --> DirecciónDeSkinSegúnElMovimiento
+Bob .right.>"<<throws>>" IOException
+Mapa ..>"<<throws>>" IOException
+Nivel .up.>"<<throws>>" PuntuaciónMenorACeroException
+Mapa ..>"<<throws>>" BloqueInexistenteException
+Mapa --> bloques
+Nivel -left-> ConstantesDePuntuación
+@enduml
